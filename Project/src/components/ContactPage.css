@@ -1,0 +1,162 @@
+.contact-container {
+    background-color: white;
+    color: rgb(5, 5, 66);
+    padding: 30px 20px;
+    font-family: Arial, sans-serif;
+    text-align: center;
+    overflow: hidden; /* Prevents scrollbar flashes */
+  }
+  
+  /* ✅ Heading */
+  .contact-container h1 {
+    margin-bottom: 20px;
+    font-size: 2rem;
+    opacity: 0;
+    animation: fadeIn 1s ease-in forwards;
+  }
+  
+  /* ✅ Flex container */
+  .contact-sections {
+    display: flex;
+    justify-content: center;
+    align-items: stretch;
+    gap: 20px;
+    margin: 20px 0;
+    flex-wrap: wrap;
+  }
+  
+  /* ✅ Contact Sections (Equal Size) */
+  .contact-section {
+    background-color: #8fbff3;
+    padding: 20px;
+    border-radius: 10px;
+    width: 100%;
+    max-width: 450px;
+    text-align: left;
+    box-shadow: 0 4px 8px #001f3f;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    min-height: 280px;
+    transition: transform 0.3s ease-in-out;
+  }
+  
+  /* ✅ Hover Effect */
+  .contact-section:hover {
+    transform: translateY(-5px);
+    transition: transform 0.3s ease-in-out;
+  }
+  
+  /* ✅ Section Headings */
+  .contact-section h2 {
+    margin-bottom: 10px;
+    font-size: 1.5rem;
+  }
+  
+  .contact-section h3 {
+    margin: 15px 0 10px;
+    font-size: 1.2rem;
+  }
+  
+  /* ✅ Contact Info Box */
+  .contact-info {
+    background-color: #deeeea;
+    padding: 10px;
+    border-radius: 5px;
+    margin: 10px 0;
+  }  
+  /* ✅ Tele Timings Box */
+  .tele-timings {
+    background-color: #8fbff3;
+    padding: 15px;
+    border-radius: 10px;
+    margin-top: 30px;
+    display: inline-block;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  }
+  
+  /* ✅ Animation Effects */
+  @keyframes slideInLeft {
+    from {
+      transform: translateX(-100%);
+      opacity: 0;
+    }
+    to {
+      transform: translateX(0);
+      opacity: 1;
+    }
+  }
+  
+  @keyframes slideInRight {
+    from {
+      transform: translateX(100%);
+      opacity: 0;
+    }
+    to {
+      transform: translateX(0);
+      opacity: 1;
+    }
+  }
+  
+  @keyframes slideInBottom {
+    from {
+      transform: translateY(100%);
+      opacity: 0;
+    }
+    to {
+      transform: translateY(0);
+      opacity: 1;
+    }
+  }
+  
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }
+  
+  /* ✅ Apply animations */
+  .contact-section:first-child {
+    animation: slideInLeft 1.5s ease-in-out forwards;
+  }
+  
+  .contact-section:last-child {
+    animation: slideInRight 1.5s ease-in-out forwards;
+  }
+  
+  .tele-timings {
+    animation: slideInBottom 1.5s ease-in-out forwards;
+  }
+  
+  /* ✅ Responsive Adjustments */
+  @media (max-width: 768px) {
+    .contact-sections {
+      flex-direction: column;
+    }
+  
+    .contact-section {
+      width: 90%;
+      max-width: none;
+      min-height: auto;
+      animation: fadeIn 1.5s ease-in-out forwards; /* Fallback for mobile */
+    }
+  }
+  
+  @media (max-width: 480px) {
+    .contact-container {
+      padding: 20px;
+    }
+  
+    .contact-section {
+      width: 100%;
+    }
+  
+    .contact-container h1 {
+      font-size: 1.8rem;
+    }
+  }
+  

@@ -145,3 +145,15 @@
     top: 20%; /* Hide search icon in mobile view */
   }
 }
+
+.loading-container {
+  display: flex;
+  justify-content: center;
+  height: 80vh;  /* This will make it vertically centered relative to the viewport */
+  width: 90%;    /* This ensures it takes the full width of the container */
+}
+
+.loading-gif {
+  max-width: 90%;  /* Ensures the GIF takes up the full width without overflow */
+  height: auto;     /* Maintains the aspect ratio */
+}

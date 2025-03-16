@@ -10,12 +10,14 @@ const Login = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState("");
   const [activeTab, setActiveTab] = useState("user"); // Default to User Login
+  const [loading, setLoading] = useState(false); // Track loading state
   const navigate = useNavigate();
 
   // Function to handle login
   const handleLogin = async (e) => {
     e.preventDefault();
     setError(""); // Clear previous error messages
+    setLoading(true); // Set loading state to true when request starts
 
     try {
       const response = await axios.post(
@@ -39,6 +41,8 @@ const Login = () => {
       setError(
         error.response?.data?.message || "Login failed. Please try again."
       );
+    } finally {
+      setLoading(false); // Set loading state to false after the request is done
     }
   };
 
@@ -90,8 +94,8 @@ const Login = () => {
             </span>
           </div>
 
-          <button type="submit">
-            {activeTab === "user" ? "Login as User" : "Login as Admin"}
+          <button type="submit" disabled={loading}>
+            {loading ? "Loading..." : activeTab === "user" ? "Login as User" : "Login as Admin"}
           </button>
         </form>
       </div>

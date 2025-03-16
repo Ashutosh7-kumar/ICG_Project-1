@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useCallback, useMemo } from "react";
-import { FaSearch, FaSave, FaTrash } from "react-icons/fa";
+import { FaSearch, FaSave, FaTrash, FaSpinner } from "react-icons/fa"; // Add FaSpinner for loading indicator
 import axios from "axios";
 import "./EditTable.css";
 
@@ -7,6 +7,29 @@ const EditTable = () => {
   const [query, setQuery] = useState("");
   const [searchField, setSearchField] = useState("name_boat");
   const [data, setData] = useState([]);
+  const [isFormVisible, setIsFormVisible] = useState(false);
+  const [newRow, setNewRow] = useState({
+    name_boat: "",
+    reg_no: "",
+    owner: "",
+    Harbour: "",
+    no_crew: 0,
+    biometric_card: "",
+    other_id: "",
+    crew_without_id_card: "",
+    fishing_boat_document: "",
+    GPS: "",
+    compass: "",
+    HF: "",
+    VHF: "",
+    Life_Buoy: "",
+    Life_Jacket: "",
+    Dats: "",
+    owner_contact: "",
+    colour_coding: "",
+  });
+
+  const [loading, setLoading] = useState(false); // Track loading state for form submission
 
   useEffect(() => {
     axios
@@ -43,38 +66,121 @@ const EditTable = () => {
     }
   };
 
+  const handleAddNewRow = () => {
+    setIsFormVisible(true);
+  };
+
+  const handleFormChange = (e) => {
+    const { name, value } = e.target;
+    setNewRow((prevRow) => ({ ...prevRow, [name]: value }));
+  };
+
+  const handleFormSubmit = async (e) => {
+    e.preventDefault();
+    setLoading(true); // Set loading to true when the form is submitted
+    try {
+      const response = await axios.post("https://icg-project-1.onrender.com/create", newRow);
+      setData((prevData) => [...prevData, response.data]);
+      setIsFormVisible(false);
+      setNewRow({
+        name_boat: "",
+        reg_no: "",
+        owner: "",
+        Harbour: "",
+        no_crew: 0,
+        biometric_card: "",
+        other_id: "",
+        crew_without_id_card: "",
+        fishing_boat_document: "",
+        GPS: "",
+        compass: "",
+        HF: "",
+        VHF: "",
+        Life_Buoy: "",
+        Life_Jacket: "",
+        Dats: "",
+        owner_contact: "",
+        colour_coding: "",
+      });
+      console.log("Data loaded successfully");
+    } catch (error) {
+      console.log("Error occurred in loading data");
+    } finally {
+      setLoading(false); // Set loading to false once the request is completed
+    }
+  };
+
   const filteredData = useMemo(
     () => data.filter((row) => row[searchField]?.toString().toLowerCase().includes(query)),
     [query, searchField, data]
   );
 
   return (
-    <div className="table-container">
+    <div className={`table-container ${isFormVisible ? "blur-background" : ""}`}>
       {/* Search Section */}
       <div className="search-box">
-      <div className="search-container">
-  <FaSearch className="search-icon" />
-  <input
-    type="text"
-    className="search-input"  // Added class name here
-    placeholder={`Search by ${searchField}...`}
-    value={query}
-    onChange={handleSearch}
-  />
-  <select className="search-dropdown" value={searchField} onChange={handleFieldChange}>
-  {["name_boat", "Harbour", "owner", "no_crew", "colour_coding", 
-              "biometric_card", "other_id", "crew_without_id_card", 
-              "fishing_boat_document", "GPS", "compass", "HF", "VHF", 
-              "Life_Buoy", "Life_Jacket", "Dats", "owner_contact"
+        <div className="search-container">
+          <FaSearch className="search-icon" />
+          <input
+            type="text"
+            className="search-input"
+            placeholder={`Search by ${searchField}...`}
+            value={query}
+            onChange={handleSearch}
+          />
+          <select className="search-dropdown" value={searchField} onChange={handleFieldChange}>
+            {[
+              "name_boat",
+              "Harbour",
+              "owner",
+              "no_crew",
+              "colour_coding",
+              "biometric_card",
+              "other_id",
+              "crew_without_id_card",
+              "fishing_boat_document",
+              "GPS",
+              "compass",
+              "HF",
+              "VHF",
+              "Life_Buoy",
+              "Life_Jacket",
+              "Dats",
+              "owner_contact",
             ].map((field) => (
               <option key={field} value={field}>
                 {field.replace(/_/g, " ")}
               </option>
             ))}
-  </select>
-  <button className="edit-button">+</button>
-</div>
-</div>
+          </select>
+          <button className="edit-button" onClick={handleAddNewRow}>+</button>
+        </div>
+      </div>
+
+      {/* Add New Row Form */}
+      {isFormVisible && (
+        <div className="form-overlay">
+          <form className="add-row-form" onSubmit={handleFormSubmit}>
+            {Object.keys(newRow).map((field) => (
+              <div key={field} className="form-group">
+                <label>{field.replace(/_/g, " ")}</label>
+                <input
+                  type={field === "no_crew" ? "number" : "text"}
+                  name={field}
+                  value={newRow[field]}
+                  onChange={handleFormChange}
+                />
+              </div>
+            ))}
+            <button type="submit" className="submit-button" disabled={loading}>
+              {loading ? <FaSpinner className="spinner" /> : "Add Data"}
+            </button>
+            <button type="button" className="cancel-button" onClick={() => setIsFormVisible(false)}>
+              Cancel
+            </button>
+          </form>
+        </div>
+      )}
 
       {/* Table */}
       <table className="results-table">

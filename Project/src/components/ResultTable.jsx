@@ -73,7 +73,13 @@ const ResultTable = () => {
 
       {/* Table */}
       {loading ? (
-        <p>Loading boats...</p>
+        <div className="loading-container">
+          <img
+            src="/images/loading.gif"  // Replace with your boat GIF URL
+            alt="Loading boat"
+            className="loading-gif"
+          />
+        </div>
       ) : error ? (
         <p className="error">{error}</p>
       ) : (
